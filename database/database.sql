@@ -9,6 +9,6 @@ CREATE TABLE brinquedos (
     descricao VARCHAR(255),
     faixa_etaria VARCHAR(30) NOT NULL,
     preco DECIMAL(10,2) NOT NULL,
-    quantidade_estoque INT UNSIGNED NOT NULL default 0,
+    quantidade_estoque INT UNSIGNED NOT NULL default 0
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
