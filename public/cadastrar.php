@@ -2,7 +2,7 @@
 
 require_once "../infra/conexao.php";
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $nome = $_POST["nome"];
     $categoria = $_POST["categoria"];
@@ -15,21 +15,30 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             (nome, categoria, descricao, faixa_etaria, preco, quantidade_estoque)
             VALUES (?, ?, ?, ?, ?, ?)";
 
-    $comando = $conexao->prepare($sql);
+    $stmt = $conexao->prepare($sql);
 
-    $comando->bind_param(
+    if (!$stmt) {
+        die("Erro ao preparar o cadastro: " . $conexao->error);
+    }
+
+    $stmt->bind_param(
         "ssssdi",
         $nome,
         $categoria,
         $descricao,
-        $faixaEtaria,
+        $faixa_etaria,
         $preco,
         $estoque
     );
 
-    $comando->execute();
+    if (!$stmt->execute()) {
+        die("Erro ao cadastrar brinquedo: " . $stmt->error);
+    }
 
-    $comando->close();
+    $stmt->close();
+
+    header("Location: ../index.php");
+    exit;
 }
 
 header("Location: ../index.php");
